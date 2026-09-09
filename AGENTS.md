@@ -49,3 +49,5 @@
 
 - Phase 1 uses one session and one embedded reference per Project, with at most Copy and Memory artworks. Each artwork owns its palette and a single-layer, single-frame RasterDocument; tags and finalized-artwork branching are deferred. Keep spec AC-01–AC-12 synchronized with design section 10.5.
 - Keep ProjectRevision (monotonic persisted-content changes), render_epoch (including in-progress edits and rollback), and save-job OpenGeneration separate. Recovery guarantees only the last successfully written snapshot; recovery saves do not clear explicit-save dirty state.
+- The Phase 1 Cargo workspace members are `apps/desktop`, `crates/pixel_core`, `crates/training`, and `crates/project_io`; preserve the dependency direction documented in `資料/Dotted Training Studioプログラム設計.md`.
+- Run `cargo fmt --check`, `cargo test --workspace`, and `cargo clippy --workspace --all-targets -- -D warnings` from the repository root; CI runs the same checks on macOS and Windows.

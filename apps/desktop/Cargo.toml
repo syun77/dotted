@@ -1,0 +1,20 @@
+[package]
+name = "dotted-desktop"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+chrono.workspace = true
+eframe.workspace = true
+pixel_core = { path = "../../crates/pixel_core" }
+project_io = { path = "../../crates/project_io" }
+rfd.workspace = true
+training = { path = "../../crates/training" }
+uuid.workspace = true
+
+[lints]
+workspace = true
+
