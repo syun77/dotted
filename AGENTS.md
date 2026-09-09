@@ -28,3 +28,13 @@
 ## Documentation
 
 - Japanese learning/reference material belongs in `資料/` as Markdown. Use descriptive Japanese filenames and link primary sources inline when documenting software behavior.
+
+## Dot tool development
+
+- The product is an Aseprite-like raster pixel-art editor focused on deliberate practice. It is not a vector-to-pixel converter and must not assume a 1-bit target. Before designing or implementing it, read `.agents/dot-tool-development.md` and keep that guide synchronized with product decisions.
+- Treat the layer/frame pixel data and palette as the editable source of truth. Every drawing operation must produce deterministic integer-grid pixel changes without antialiasing or subpixel state.
+- Make the core practice loop first-class: choose a size and palette constraint, observe a reference, build a silhouette, add limited values/colors, inspect at 1x, export, and record a short reflection. Features should reduce friction in this loop rather than merely imitate a general-purpose painting app.
+- Optimize feedback in this order: readability at 1x, silhouette, value contrast, deliberate pixel clusters and contour rhythm, animation readability, color, then detail. Surface accidental isolated pixels, jagged contours, excess colors, and noisy dithering without silently rewriting the artwork.
+- Support enlarged editing and a simultaneous 1x preview. Verify artwork on the intended background and animations at actual playback speed; zoomed canvas appearance alone is not acceptance.
+- Keep document content (canvas, layers, frames, palette, tags, and persisted practice metadata) separate from transient UI state (zoom, pan, active selection, dialogs). Define Undo/Redo transaction boundaries for complete user gestures.
+- Preserve exact pixels on import/export. PNG is the baseline static interchange format; animation and sprite-sheet exports must preserve frame order, timing, transparency, tags, and integer nearest-neighbor scaling where enlargement is requested.
