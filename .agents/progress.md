@@ -1,10 +1,10 @@
 # Active Task Progress
 
-- Objective: 開発規模・工数・費用の見積もりを`資料/見積もり.md`として保存する。
-- Status: Complete.
-- Completed work: 仕様、Phase 1プログラム設計、開発ガイド、リポジトリ状態を確認した。Phase 1を機能群別に分解した人月・費用、体制別の期間、Phase 2〜4の概算、別途費用、推奨スパイク、見積もり精度を`資料/見積もり.md`へ保存した。
-- Key decisions: 見積もりは1人月=20人日、税別の開発単価を80万〜120万円/人月とする。Phase 1は製品MVPとして6〜9人月を基準にし、不確実性予備を費用レンジへ含める。ユーザー調査の募集謝礼、コード署名、配布費、機材、継続保守は別費用として扱う。
-- Files changed: `資料/見積もり.md`、`.agents/progress.md`。
-- Verification: 対象2文書のMVP範囲、受け入れ条件、8段階の実装順序、Phase 2〜4の範囲を照合し、見積もり文書へ反映した。生成したMarkdownを再読し、`git diff --check`成功を確認した。
-- Blockers or open questions: 費用は担当者のRust/egui経験、UIデザイン品質、Windows/macOS両方の実機QA、配布方法により変動する。正式見積もりにはこれらの確定が必要。
-- Exact next steps: 実装開始時はPhase 1の最初の2週間を基盤・技術スパイクに充て、その実績速度で残工数を再見積もりする。
+- Objective: 仕様・設計を9観点（型・責務、依存、Undo、形式、競合、Memory、egui、MVP、テスト）で精査・修正する。
+- Status: In progress; 仕様・設計の修正と最終構造レビュー完了、文書検証中。
+- Completed work: 型所有と最小MVPモデル、独立パレット、原子的な段階遷移、Undo不変条件、保存v1検証、単一I/Oワーカーと世代判定、復旧保証、egui入力描画、AC-01〜12のテスト対応表を反映。開発ガイドとAGENTSも同期。
+- Key decisions: 復旧は最後の書込み成功snapshotまで。1 Project＝1セッション、確定版編集分岐・タグ等は延期。半透明RGBAを保持。1×は物理ピクセル。実装はまだ存在しないため、テスト表は実装時の契約として明記。
+- Files changed: 資料/Dotted Training Studioプログラム設計.md、資料/ドット絵スキル向上ツール仕様.md、AGENTS.md、.agents/dot-tool-development.md、.agents/progress.md。
+- Verification: egui InputState/Event/Context/ColorImage、Rust renameの一次資料確認。関連文書を横断再読し、重複テスト一覧を整理、逆dev依存・型名・保存範囲の残存矛盾を修正。
+- Blockers or open questions: 作業上の阻害なし。OS最低版・依存版・DPI/IME/ファイル置換は基盤スパイクの残存検証事項として明記。
+- Exact next steps: Markdown構造・ローカルリンク・AC対応・git diff --checkを検証し、完了記録と結果報告。

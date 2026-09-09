@@ -46,3 +46,6 @@
 - Use `資料/Dotted Training Studioプログラム設計.md` for the Phase 1 architecture. Keep dependencies directed from the desktop UI into UI-independent `training`, `pixel_core`, and `project_io` crates; never let domain crates depend on egui, OS APIs, SQLite, or dialogs.
 - The MVP persists `.dotted` as a ZIP container with JSON metadata and per-cel RGBA PNGs, embeds normalized references, and uses a rebuildable SQLite history index. Normalize fully transparent pixels to RGBA `(0,0,0,0)` and preserve exact non-transparent RGBA values.
 - All pixel mutation must pass through edit commands. One pointer gesture is one Undo transaction, diagnostics are read-only projections, and the Copy-to-Memory transition must construct an independent transparent grid without accepting copied pixels as input.
+
+- Phase 1 uses one session and one embedded reference per Project, with at most Copy and Memory artworks. Each artwork owns its palette and a single-layer, single-frame RasterDocument; tags and finalized-artwork branching are deferred. Keep spec AC-01–AC-12 synchronized with design section 10.5.
+- Keep ProjectRevision (monotonic persisted-content changes), render_epoch (including in-progress edits and rollback), and save-job OpenGeneration separate. Recovery guarantees only the last successfully written snapshot; recovery saves do not clear explicit-save dirty state.
