@@ -24,3 +24,7 @@
 - Keep comments and documentation accurate for the final current implementation. Remove change-history comments, temporary notes, and explanations of what the code used to do; retain only comments that clarify the current behavior or non-obvious rationale.
 - Implement the solution you judge to be the strongest overall design within the requested scope, and carry necessary follow-on changes through the repository rather than applying a narrowly local patch.
 - Every implementation task must include a final refactoring phase after functional work is complete. In that phase, review the entire changed area for simpler structure, clearer naming, duplication, dead code, obsolete abstractions, consistent APIs, and current comments; apply the warranted improvements, then run the relevant verification again.
+
+## Documentation
+
+- Japanese learning/reference material belongs in `資料/` as Markdown. Use descriptive Japanese filenames and link primary sources inline when documenting software behavior.
