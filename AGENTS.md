@@ -38,3 +38,6 @@
 - Support enlarged editing and a simultaneous 1x preview. Verify artwork on the intended background and animations at actual playback speed; zoomed canvas appearance alone is not acceptance.
 - Keep document content (canvas, layers, frames, palette, tags, and persisted practice metadata) separate from transient UI state (zoom, pan, active selection, dialogs). Define Undo/Redo transaction boundaries for complete user gestures.
 - Preserve exact pixels on import/export. PNG is the baseline static interchange format; animation and sprite-sheet exports must preserve frame order, timing, transparency, tags, and integer nearest-neighbor scaling where enlargement is requested.
+- Treat “copy → hide the reference → redraw from memory on a blank canvas → make a variation → compare → reflect” as the product's defining workflow. Save each stage as a separate artifact; never overwrite the earlier stage or initialize memory drawing from copied pixels.
+- Treat hand-drawn 16×16 → 8×8 → 32×32 reinterpretation as a primary post-MVP exercise. Do not present automatic downscaling or pixel-difference scores as the answer; diagnostics identify review candidates and must not silently edit or rank artwork.
+- Use `資料/ドット絵スキル向上ツール仕様.md` as the product specification for scope, flows, data model, MVP acceptance criteria, and phased delivery.
