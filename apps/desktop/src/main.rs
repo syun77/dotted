@@ -6,7 +6,8 @@ use pixel_core::{
 };
 use project_io::{ExportScale, export_png, load_project, save_project};
 use std::{
-    path::PathBuf,
+    fs,
+    path::{Path, PathBuf},
     time::{Duration, Instant},
 };
 use training::{
@@ -65,7 +66,8 @@ struct DottedApp {
 }
 
 impl DottedApp {
-    fn new(_cc: &eframe::CreationContext<'_>) -> Self {
+    fn new(cc: &eframe::CreationContext<'_>) -> Self {
+        let japanese_font_loaded = configure_japanese_font(&cc.egui_ctx);
         Self {
             project: None,
             edit: None,
@@ -73,7 +75,11 @@ impl DottedApp {
             selected: Rgba8::BLACK,
             zoom: 24,
             display: DisplayMode::Normal,
-            status: "準備完了".into(),
+            status: if japanese_font_loaded {
+                "準備完了".into()
+            } else {
+                "日本語フォントが見つかりません".into()
+            },
             save_path: None,
             revision: 0,
             saved_revision: 0,
@@ -755,4 +761,73 @@ fn dirs_path() -> Option<PathBuf> {
                 .join("recovery")
         }
     })
+}
+
+fn configure_japanese_font(ctx: &egui::Context) -> bool {
+    let Some(path) = find_japanese_font() else {
+        return false;
+    };
+    let Ok(bytes) = fs::read(path) else {
+        return false;
+    };
+    let mut fonts = egui::FontDefinitions::default();
+    const NAME: &str = "dotted_japanese";
+    fonts
+        .font_data
+        .insert(NAME.to_owned(), egui::FontData::from_owned(bytes).into());
+    for family in [egui::FontFamily::Proportional, egui::FontFamily::Monospace] {
+        fonts
+            .families
+            .entry(family)
+            .or_default()
+            .insert(0, NAME.to_owned());
+    }
+    ctx.set_fonts(fonts);
+    true
+}
+
+fn find_japanese_font() -> Option<PathBuf> {
+    let fixed = if cfg!(target_os = "windows") {
+        [
+            Path::new(r"C:\Windows\Fonts\YuGothR.ttc"),
+            Path::new(r"C:\Windows\Fonts\meiryo.ttc"),
+            Path::new(r"C:\Windows\Fonts\msgothic.ttc"),
+        ]
+        .into_iter()
+        .find(|path| path.is_file())
+    } else {
+        [
+            Path::new("/System/Library/Fonts/Hiragino Sans GB.ttc"),
+            Path::new("/System/Library/Fonts/Supplemental/Arial Unicode.ttf"),
+            Path::new("/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"),
+        ]
+        .into_iter()
+        .find(|path| path.is_file())
+    };
+    fixed.map(Path::to_path_buf).or_else(find_macos_hiragino)
+}
+
+fn find_macos_hiragino() -> Option<PathBuf> {
+    if !cfg!(target_os = "macos") {
+        return None;
+    }
+    fs::read_dir("/System/Library/Fonts")
+        .ok()?
+        .filter_map(Result::ok)
+        .map(|entry| entry.path())
+        .find(|path| {
+            path.file_name()
+                .and_then(|name| name.to_str())
+                .is_some_and(|name| name.starts_with("ヒラ") && name.contains("W3.ttc"))
+        })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn platform_japanese_font_is_available() {
+        assert!(find_japanese_font().is_some());
+    }
 }

@@ -51,3 +51,4 @@
 - Keep ProjectRevision (monotonic persisted-content changes), render_epoch (including in-progress edits and rollback), and save-job OpenGeneration separate. Recovery guarantees only the last successfully written snapshot; recovery saves do not clear explicit-save dirty state.
 - The Phase 1 Cargo workspace members are `apps/desktop`, `crates/pixel_core`, `crates/training`, and `crates/project_io`; preserve the dependency direction documented in `資料/Dotted Training Studioプログラム設計.md`.
 - Run `cargo fmt --check`, `cargo test --workspace`, and `cargo clippy --workspace --all-targets -- -D warnings` from the repository root; CI runs the same checks on macOS and Windows.
+- egui's bundled fonts do not cover Japanese. Keep the startup font registration in `apps/desktop/src/main.rs`: prefer Hiragino on macOS and Yu Gothic/Meiryo/MS Gothic on Windows, inserting it first in both egui font families.
